@@ -154,11 +154,12 @@ class BaseCommand extends Command
 
     public function isSkip($skip)
     {
+
         if ($this->commandData->getOption('skip')) {
             return in_array($skip, (array) $this->commandData->getOption('skip'));
+        }else{
+            return !$this->isOnly($skip);
         }
-
-        return false;
     }
 
     public function performPostActionsWithMigration()
@@ -253,5 +254,20 @@ class BaseCommand extends Command
         return [
             ['model', InputArgument::REQUIRED, 'Singular Model name'],
         ];
+    }
+
+    /**
+     * Skip all routes except this
+     *
+     * @param $item
+     * @return bool
+     */
+    public function isOnly($item)
+    {
+        if ($this->commandData->getOption('only')) {
+            return in_array($item, (array) $this->commandData->getOption('only'));
+        }
+
+        return true;
     }
 }
