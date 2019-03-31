@@ -77,6 +77,9 @@ class TestTraitGenerator extends BaseGenerator
                         GeneratorFieldsInputUtil::prepareValuesArrayStr($field->htmlValues).
                         ')';
                     break;
+                case 'boolean':
+                    $fakerData = 'boolean';
+                    break;
                 default:
                     $fakerData = 'word';
             }
