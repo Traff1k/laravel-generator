@@ -81,6 +81,7 @@ class GeneratorConfig
         'views',
         'relations',
         'plural',
+        'only',
     ];
 
     public $tableName;

@@ -241,6 +241,7 @@ class BaseCommand extends Command
             ['datatables', null, InputOption::VALUE_REQUIRED, 'Override datatables settings'],
             ['views', null, InputOption::VALUE_REQUIRED, 'Specify only the views you want generated: index,create,edit,show'],
             ['relations', null, InputOption::VALUE_NONE, 'Specify if you want to pass relationships for fields'],
+            ['only', null, InputOption::VALUE_REQUIRED, 'Generate ONLY Specific Items (migration,model,controllers,api_controller,scaffold_controller,repository,requests,api_requests,scaffold_requests,routes,api_routes,scaffold_routes,views,tests,menu,dump-autoload)'],
         ];
     }
 
