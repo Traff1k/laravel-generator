@@ -149,6 +149,7 @@ class TableFieldsGenerator
             }
             $field->isNotNull = (bool) $column->getNotNull();
             $field->description = $column->getComment(); // get comments from table
+            $field->length = $column->getLength();
 
             $this->fields[] = $field;
         }

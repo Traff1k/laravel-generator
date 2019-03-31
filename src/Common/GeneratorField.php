@@ -30,6 +30,9 @@ class GeneratorField
     public $inIndex = true;
     public $isNotNull = false;
 
+    /**@var integer*/
+    public $length;
+
     public function parseDBType($dbInput)
     {
         $this->dbInput = $dbInput;

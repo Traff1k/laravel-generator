@@ -60,10 +60,10 @@ class TestTraitGenerator extends BaseGenerator
             switch ($field->fieldType) {
                 case 'integer':
                 case 'float':
-                    $fakerData = 'randomDigitNotNull';
+                    $fakerData = ($field->length) ? "randomNumber({$field->length})" : 'randomDigitNotNull';
                     break;
                 case 'string':
-                    $fakerData = 'word';
+                    $fakerData = ($field->length) ? "lexify('" . str_repeat('?', $field->length). "')" : 'word';
                     break;
                 case 'text':
                     $fakerData = 'text';
@@ -81,7 +81,7 @@ class TestTraitGenerator extends BaseGenerator
                     $fakerData = 'boolean';
                     break;
                 default:
-                    $fakerData = 'word';
+                    $fakerData = ($field->length) ? "lexify('" . str_repeat('?', $field->length). "')" : 'word';
             }
 
             $fieldData .= $fakerData;
