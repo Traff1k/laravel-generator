@@ -151,4 +151,18 @@ class GeneratorField
 
         return $this->$key;
     }
+
+
+    /**
+     * @return string
+     */
+    public function getFieldFakeWord()
+    {
+        if($this->length && $this->length <= 20) {
+            $fakerData = "lexify('" . str_repeat('?', $this->length);
+        } else {
+            $fakerData = 'word';
+        }
+        return $fakerData;
+    }
 }

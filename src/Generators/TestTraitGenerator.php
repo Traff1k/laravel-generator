@@ -63,7 +63,7 @@ class TestTraitGenerator extends BaseGenerator
                     $fakerData = ($field->length) ? "randomNumber({$field->length})" : 'randomDigitNotNull';
                     break;
                 case 'string':
-                    $fakerData = ($field->length) ? "lexify('" . str_repeat('?', $field->length). "')" : 'word';
+                    $fakerData = $field->getFieldFakeWord();
                     break;
                 case 'text':
                     $fakerData = 'text';
@@ -81,7 +81,7 @@ class TestTraitGenerator extends BaseGenerator
                     $fakerData = 'boolean';
                     break;
                 default:
-                    $fakerData = ($field->length) ? "lexify('" . str_repeat('?', $field->length). "')" : 'word';
+                    $fakerData = $field->getFieldFakeWord();
             }
 
             $fieldData .= $fakerData;
