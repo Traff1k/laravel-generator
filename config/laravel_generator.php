@@ -46,6 +46,8 @@ return [
         'templates_dir'     => base_path('resources/infyom/infyom-generator-templates/'),
 
         'modelJs'           => base_path('resources/assets/js/models/'),
+
+        'domains'           => app_path('Domains/'),
     ],
 
     /*
@@ -78,6 +80,8 @@ return [
         'api_test'          => 'Tests\APIs',
 
         'tests'             => 'Tests',
+
+        'domains'           => 'App\Domains',
     ],
 
     /*

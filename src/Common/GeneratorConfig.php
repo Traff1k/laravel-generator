@@ -26,6 +26,8 @@ class GeneratorConfig
     public $nsTestTraits;
     public $nsTests;
 
+    public $nsDomains;
+
     /* Path variables */
     public $pathRepository;
     public $pathModel;
@@ -42,6 +44,8 @@ class GeneratorConfig
     public $pathRoutes;
     public $pathViews;
     public $modelJsPath;
+
+    public $domainsPath;
 
     /* Model Names */
     public $mName;
@@ -147,6 +151,9 @@ class GeneratorConfig
         $this->nsApiTests = config('infyom.laravel_generator.namespace.api_test', 'Tests\APIs');
         $this->nsRepositoryTests = config('infyom.laravel_generator.namespace.repository_test', 'Tests\Repositories');
         $this->nsTests = config('infyom.laravel_generator.namespace.tests', 'Tests');
+
+        $this->nsDomains = config('infyom.laravel_generator.namespace.domains', 'App\Domains');
+
     }
 
     public function loadPaths()
@@ -209,6 +216,8 @@ class GeneratorConfig
                 'infyom.laravel_generator.path.modelsJs',
                 base_path('resources/assets/js/models/')
         );
+
+        $this->domainsPath = config('infyom.laravel_generator.path.domains', app_path('Domains/'));
     }
 
     public function loadDynamicVariables(CommandData &$commandData)
@@ -284,6 +293,8 @@ class GeneratorConfig
             '$API_VERSION$',
             config('infyom.laravel_generator.api_version', 'v1')
         );
+
+        $commandData->addDynamicVariable('$DOMAINS_NAMESPACE$', $this->nsDomains);
 
         return $commandData;
     }

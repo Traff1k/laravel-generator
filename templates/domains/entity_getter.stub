@@ -1,0 +1,7 @@
+/**
+     * @return $PROPERTY_TYPE$
+     **/
+    public function get$FUNCTION_NAME$(): $PROPERTY_TYPE$
+    {
+        return $this->$PROPERTY$;
+    }

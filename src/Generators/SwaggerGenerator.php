@@ -123,23 +123,28 @@ class SwaggerGenerator
         $templates = [];
 
         foreach ($fields as $field) {
-            $fieldName = $field['name'];
-            $type = $field['type'];
-            $format = $field['format'];
-            $propertyTemplate = str_replace('$FIELD_NAME$', $fieldName, $template);
-            $description = $field['description'];
-            if (empty($description)) {
-                $description = $fieldName;
-            }
-            $propertyTemplate = str_replace('$DESCRIPTION$', $description, $propertyTemplate);
-            $propertyTemplate = str_replace('$FIELD_TYPE$', $type, $propertyTemplate);
-            if (!empty($format)) {
-                $format = ",\n *          format=\"".$format.'"';
-            }
-            $propertyTemplate = str_replace('$FIELD_FORMAT$', $format, $propertyTemplate);
-            $templates[] = $propertyTemplate;
+            $templates[] = self::preparePropertyField($template, $field);
         }
 
         return $templates;
+    }
+
+    public static function preparePropertyField($template, $field)
+    {
+        $fieldName = $field['name'];
+        $type = $field['type'];
+        $format = $field['format'];
+
+        $propertyTemplate = str_replace('$FIELD_NAME$', $fieldName, $template);
+        $description = $field['description'];
+        if (empty($description)) {
+            $description = $fieldName;
+        }
+        $propertyTemplate = str_replace('$DESCRIPTION$', $description, $propertyTemplate);
+        $propertyTemplate = str_replace('$FIELD_TYPE$', $type, $propertyTemplate);
+        if (!empty($format)) {
+            $format = ",\n *          format=\"".$format.'"';
+        }
+        return str_replace('$FIELD_FORMAT$', $format, $propertyTemplate);
     }
 }

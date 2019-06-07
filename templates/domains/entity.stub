@@ -1,0 +1,26 @@
+<?php
+
+namespace $ENTITY_NAMESPACE$;
+
+$IMPORT_DOMAIN_STUFF$
+
+$DOCS$
+class $ENTITY_NAME$
+{
+
+$PROPERTIES$
+
+$SETTERS$
+
+$GETTERS$
+
+    /**     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return [
+        $PROPERTY_CASTS$
+        ];
+    }
+}

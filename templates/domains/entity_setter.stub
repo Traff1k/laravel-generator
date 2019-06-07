@@ -1,0 +1,9 @@
+/**
+     * @param $PROPERTY_TYPE$ $$PROPERTY$
+     * @return $ENTITY_CLASS$
+     **/
+    public function set$FUNCTION_NAME$(): self
+    {
+        $this->$PROPERTY$ = $$PROPERTY$;
+        return $this;
+    }
