@@ -2,6 +2,7 @@
 
 namespace InfyOm\Generator\Generators\Domains;
 
+use Illuminate\Support\Str;
 use InfyOm\Generator\Common\CommandData;
 use InfyOm\Generator\Generators\BaseGenerator;
 use InfyOm\Generator\Generators\SwaggerGenerator;
@@ -18,6 +19,7 @@ class EntityGenerator  extends BaseGenerator
     private $domainName;
     private $table;
     private $domainNamespace;
+    private $fields;
 
     /**
      * ModelGenerator constructor.
@@ -28,10 +30,11 @@ class EntityGenerator  extends BaseGenerator
     {
         $this->commandData = $commandData;
         $this->domainName = $this->commandData->modelName;
-        $this->path = $commandData->config->domainsPath . DIRECTORY_SEPARATOR . $this->domainName;
+        $this->path = $commandData->config->domainsPath . $this->domainName . DIRECTORY_SEPARATOR;
         $this->fileName = $this->domainName .'Entity.php';
         $this->table = $this->commandData->dynamicVars['$TABLE_NAME$'];
         $this->domainNamespace = $this->commandData->dynamicVars['$DOMAINS_NAMESPACE$'].'\\'.$this->domainName;
+        $this->fields = SwaggerGenerator::generateTypes($this->commandData->fields);
     }
 
 
@@ -81,10 +84,10 @@ class EntityGenerator  extends BaseGenerator
     private function fillImports($templateData)
     {
         $imports = [
-            $this->domainNamespace.'\\'.$this->domainName.'Factory',
-            $this->domainNamespace.'\\'.$this->domainName.'Collection',
+            'use ' . $this->domainNamespace.'\\'.$this->domainName.'Factory;',
+            'use ' . $this->domainNamespace.'\\'.$this->domainName.'Collection;',
         ];
-        return str_replace('$IMPORT_DOMAIN_STUFF$', implode(';'.infy_nl(), $imports), $templateData);
+        return str_replace('$IMPORT_DOMAIN_STUFF$', implode(infy_nl(), $imports), $templateData);
     }
 
     /**
@@ -95,7 +98,7 @@ class EntityGenerator  extends BaseGenerator
     {
         $template = get_template('model_docs.model', 'swagger-generator');
         $template = fill_template($this->commandData->dynamicVars, $template);
-        $template = fill_template(['$REQUIRED_FIELDS$' =>'""','$PROPERTIES$' =>''], $template);
+        $template = fill_template(['$REQUIRED_FIELDS$' =>'""','$PROPERTIES$' =>'*'], $template);
         return str_replace('$DOCS$', $template, $templateData);
     }
 
@@ -108,7 +111,7 @@ class EntityGenerator  extends BaseGenerator
         $properties = [];
         $templateProperty = get_template('domains.entity_property', 'laravel-generator');
         $templateSwagger = get_template('model_docs.property', 'swagger-generator');
-        foreach ($this->commandData->fields as $field){
+        foreach ($this->fields as $field) {
             $docs = SwaggerGenerator::preparePropertyField($templateSwagger, $field);
 
             $properties[] = fill_template(
@@ -119,7 +122,7 @@ class EntityGenerator  extends BaseGenerator
                 $templateProperty
             );
         }
-        return str_replace('$DOCS$', implode(infy_nl(), $properties), $templateData);
+        return str_replace('$PROPERTIES$', implode(infy_nl(2), $properties), $templateData);
     }
 
     /**
@@ -129,7 +132,7 @@ class EntityGenerator  extends BaseGenerator
     private function fillSetters($templateData)
     {
         $methods = [];
-        foreach ($this->commandData->fields as $field) {
+        foreach ($this->fields as $field) {
             $fieldName = Str::camel($field['name']);
             $template = get_template('domains.entity_setter', 'laravel-generator');
             $methods[] = fill_template(
@@ -142,7 +145,7 @@ class EntityGenerator  extends BaseGenerator
                 $template
             );
         }
-        return str_replace('$DOCS$', implode(infy_nl(), $methods), $templateData);
+        return str_replace('$SETTERS$', implode(infy_nl(2), $methods), $templateData);
     }
 
     /**
@@ -152,7 +155,7 @@ class EntityGenerator  extends BaseGenerator
     private function fillGetters($templateData)
     {
         $methods = [];
-        foreach ($this->commandData->fields as $field) {
+        foreach ($this->fields as $field) {
             $fieldName = Str::camel($field['name']);
             $template = get_template('domains.entity_getter', 'laravel-generator');
             $methods[] = fill_template(
@@ -164,7 +167,7 @@ class EntityGenerator  extends BaseGenerator
                 $template
             );
         }
-        return str_replace('$DOCS$', implode(infy_nl(), $methods), $templateData);
+        return str_replace('$GETTERS$', implode(infy_nl(2), $methods), $templateData);
     }
 
     /**
@@ -174,11 +177,11 @@ class EntityGenerator  extends BaseGenerator
     private function fillToArray($templateData)
     {
         $properties = [];
-        foreach ($this->commandData->fields as $field) {
+        foreach ($this->fields as $field) {
             $fieldName = Str::camel($field['name']);
             $methodName = 'get'.ucfirst($fieldName);
             $properties[] = "'{$fieldName}' => \$this->{$methodName}(),";
         }
-        return str_replace('$PROPERTY_CASTS$', implode(infy_tabs(2), $properties), $templateData);
+        return str_replace('$PROPERTY_CASTS$', implode(infy_nl_tab(1,2), $properties), $templateData);
     }
 }

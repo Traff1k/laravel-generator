@@ -2,7 +2,7 @@
      * @param $PROPERTY_TYPE$ $$PROPERTY$
      * @return $ENTITY_CLASS$
      **/
-    public function set$FUNCTION_NAME$(): self
+    public function set$FUNCTION_NAME$($$PROPERTY$): self
     {
         $this->$PROPERTY$ = $$PROPERTY$;
         return $this;
